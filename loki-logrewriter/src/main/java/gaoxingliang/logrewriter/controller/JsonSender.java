@@ -25,7 +25,6 @@ public class JsonSender {
 
     public static void log(String body) {
         try {
-            LOG.info("Receive one body {}", body);
             JSONObject obj = JSON.parseObject(body);
             JSONArray streams = obj.getJSONArray("streams");
             streams.forEach(stream -> {
