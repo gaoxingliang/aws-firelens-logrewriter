@@ -1,6 +1,10 @@
 # aws-firelens-logrewriter
 Rewrite the aws firelens log.
 
+# updates
+A native version based on quarkus is provided. see subfolder [aws-firelens-logrewriter-native](aws-firelens-logrewriter-native/README.md)
+This version gives better performance.
+
 # Why?
 The aws ecs has a componet named [firelens](https://aws.amazon.com/about-aws/whats-new/2019/11/aws-launches-firelens-log-router-for-amazon-ecs-and-aws-fargate/) which you can rewrite the logs to other components. 
 but the log formart has additional ecs related properties which I dodn't need it. <br>
