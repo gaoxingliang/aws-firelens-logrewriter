@@ -26,13 +26,14 @@ public class JsonSender {
             JSONArray streams = obj.getJSONArray("streams");
             streams.forEach(stream -> {
                 JSONObject eachObj = (JSONObject) stream;
-                int hash = eachObj.getJSONObject("stream").hashCode();
+                int hash = eachObj.getJSONObject("stream").toString().hashCode();
                 LokiAppender a = hash2Labels.computeIfAbsent(hash, k -> {
                     List<Label> labels = new ArrayList<>(1);
                     JSONObject oneloglabels = eachObj.getJSONObject("stream");
                     oneloglabels.keySet().forEach(loglabel -> {
                         labels.add(Label.createLabel(loglabel, oneloglabels.get(loglabel).toString()));
                     });
+                    System.out.println("New label:" + eachObj.getJSONObject("stream").toString() + " hash" + hash);
                     return init(labels.toArray(new Label[0]));
                 });
                 JSONArray vals = eachObj.getJSONArray("values");
@@ -57,6 +58,7 @@ public class JsonSender {
         b.setLabels(labels);
         b.setHeaders(new Header[0]);
         b.withName("root");
+        b.setBufferSizeMegabytes(Integer.valueOf(getEnv("BUFFER_SIZE_MB", "16")));
         b.withLayout(PatternLayout.newBuilder().withPattern("%msg").build());
         LokiAppender lokiAppender = b.build();
         lokiAppender.start();

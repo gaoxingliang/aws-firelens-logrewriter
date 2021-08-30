@@ -57,6 +57,7 @@ public class JsonSender {
         b.setLabels(labels);
         b.setHeaders(new Header[0]);
         b.withName("root");
+        b.setBufferSizeMegabytes(Integer.valueOf(getEnv("BUFFER_SIZE_MB", "16")));
         b.withLayout(PatternLayout.newBuilder().withPattern("%msg").build());
         LokiAppender lokiAppender = b.build();
         lokiAppender.start();

@@ -16,7 +16,10 @@
 
 package gaoxingliang.logrewriter;
 
+import org.graalvm.nativeimage.*;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.*;
 
 @RestController
 public class LokiController {
@@ -24,5 +27,28 @@ public class LokiController {
     @PostMapping("/loki/api/v1/push")
     public void hello(@RequestBody String body) {
         JsonSender.log(body);
+    }
+
+
+    @GetMapping("/dump")
+    public void dumpHeap() {
+        createHeapDump(false);
+    }
+
+    /*
+     * Generate heap dump and save it into temp file
+     */
+    private static void createHeapDump(boolean live) {
+        try {
+            File file = File.createTempFile("app", ".hprof");
+            VMRuntime.dumpHeap(file.getAbsolutePath(), live);
+            System.out.println("  Heap dump created " + file.getAbsolutePath() + ", size: " + file.length());
+        }
+        catch (UnsupportedOperationException unsupported) {
+            System.out.println("  Heap dump creation failed." + unsupported.getMessage());
+        }
+        catch (IOException ioe) {
+            System.out.println("IO went wrong: " + ioe.getMessage());
+        }
     }
 }
