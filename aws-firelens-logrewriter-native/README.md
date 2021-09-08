@@ -46,9 +46,8 @@ docker push edwardg/aws-firelens-logrewriter:native-1.0.0-SNAPSHOT
 
 
 # Comparison between native version and not.
-1. The memory is lower 3/4. The previous is about 600MB. now it's about 200MB.
-2. The file size decreased from 100MB to 57MB. (it can be improved more...)
-3. The image size decrsed from 500M to 162MB.
+1. The memory is lower 3/4. The previous is about 800M (about 15 logs components, each has a 16MB buffer). now it's about 500MB.
+2. The file size decreased from 100MB to 21MB. (it can be improved more...)
 
 # References
 1. [a simple guide of quarkus about how to build native image](https://quarkus.io/guides/building-native-image)

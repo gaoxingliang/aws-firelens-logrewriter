@@ -16,6 +16,7 @@
 
 package gaoxingliang.logrewriter;
 
+import org.eclipse.microprofile.config.inject.*;
 import org.graalvm.nativeimage.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,11 +25,22 @@ import java.io.*;
 @RestController
 public class LokiController {
 
+    @ConfigProperty(name = "LOKI_HOST")
+    String lokiHost;
+
+    @ConfigProperty(name = "LOKI_PORT")
+    int lokiPort;
+
+
     @PostMapping("/loki/api/v1/push")
-    public void hello(@RequestBody String body) {
-        JsonSender.log(body);
+    public void lokiPush(@RequestBody String body) {
+        JsonSender.log(lokiHost, lokiPort, body);
     }
 
+    @GetMapping("/stats")
+    public String get() {
+        return JsonSender.sharedStats.toString() + " " + lokiHost + " " + lokiPort;
+    }
 
     @GetMapping("/dump")
     public void dumpHeap() {
